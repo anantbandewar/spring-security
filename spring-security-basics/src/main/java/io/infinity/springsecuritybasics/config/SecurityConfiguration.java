@@ -35,7 +35,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         */
 
 
-        // JDBC Authentication
+        // JDBC Authentication - Hard coded values
+        /*
         builder.jdbcAuthentication()
                 .dataSource(dataSource)
                 .withDefaultSchema()
@@ -49,6 +50,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                                 .password("blah")
                                 .roles("USER")
                 );
+        */
+
+        // JDBC Authentication - Schema/Data script provided
+        builder.jdbcAuthentication()
+                .dataSource(dataSource)
+                // Override below methods only in case you have custom schema for user & authorities table.
+                .usersByUsernameQuery("SELECT username, password, enabled FROM users WHERE username = ?")
+                .authoritiesByUsernameQuery("SELECT username, authority FROM authorities WHERE username = ?");
     }
 
     @Override
